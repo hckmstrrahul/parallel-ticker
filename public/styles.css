@@ -105,6 +105,10 @@ main{width:100%;max-width:var(--page-max);padding-inline:var(--page-gutter);padd
 .distribution-row .prob-line{margin:0}
 .prob-line{width:100%;min-width:0}
 .prob-track{min-width:0}
+.probability-high .prob-track span{background:#81a87f}
+.probability-medium .prob-track span{background:#c89c52}
+.probability-low .prob-track span{background:#c77d72}
+.probability-unavailable .prob-track span{background:#aaa69c}
 .prob-line .value{min-width:4ch;text-align:end;font-variant-numeric:tabular-nums}
 .strength-panel{display:flex;flex-direction:column}
 .strength-panel .meter{margin-block-start:auto;flex-shrink:0}

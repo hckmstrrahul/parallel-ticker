@@ -27,7 +27,9 @@ function boolean(answer, name) {
   return `<div class="boolean-item"><div class="boolean-label"><span>${name}</span><strong class="${value.toLowerCase()}">${value}</strong></div>${probabilityBar(p, 'Probability this predicate is true')}</div>`;
 }
 function probabilityBar(p, title = 'Option probability') {
-  return `<div class="prob-line"><div class="prob-track" aria-hidden="true"><span style="width:${validProbability(p) ? p * 100 : 0}%"></span></div><span class="value" title="${title}">${percent(p)}</span></div>`;
+  const level = !validProbability(p) ? 'unavailable' : p >= .8 ? 'high' : p >= .5 ? 'medium' : 'low';
+  const band = { high: 'High · ≥80%', medium: 'Medium · 50–79%', low: 'Low · <50%', unavailable: 'Unavailable' }[level];
+  return `<div class="prob-line probability-${level}" title="${title}: ${band}"><div class="prob-track" aria-hidden="true"><span style="width:${validProbability(p) ? p * 100 : 0}%"></span></div><span class="value" title="${title}">${percent(p)}</span></div>`;
 }
 function bars(score) {
   return Array.from({ length: 32 }, (_, i) => `<i${score !== null && i < Math.round(score / 4 * 32) ? ' class="filled"' : ''}></i>`).join('');

@@ -4,7 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#eeece8"><meta name="description" content="A minimal stock signal explorer, grounded in web evidence by the free Parallel Decisions API.">
   <title>parallel-ticker — Parallel Decisions demo</title>
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css?v=20261029-10"><script type="module" src="/app.js?v=20261029-7"></script>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css?v=20261029-11"><script type="module" src="/app.js?v=20261029-11"></script>
 </head>
 <body>
   <header class="site-header">
@@ -12,7 +12,7 @@
     <div class="header-right"><button class="text-button" id="about-button" aria-expanded="false" aria-controls="about">How it works <span aria-hidden="true">↗</span></button></div>
   </header>
   <main>
-    <section class="intro" aria-labelledby="title"><div class="eyebrow"><span class="parallel-mark" aria-hidden="true"></span> PARALLEL.AI DECISIONS API DEMO</div><h1 id="title">Read the <span>signal.</span></h1><p>Stock signals, backed by sources.</p></section>
+    <section class="intro" aria-labelledby="title"><div class="eyebrow"><span class="parallel-mark" aria-hidden="true"></span> PARALLEL.AI DECISIONS API DEMO</div><h1 id="title">Read the <span>signal.</span></h1></section>
     <section class="search-section" aria-label="Analyze a stock">
       <form id="stock-form" class="search-panel"><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><label class="sr-only" for="stock">Stock name or ticker</label><input id="stock" name="stock" type="text" placeholder="Enter a stock name or ticker" maxlength="100" autocomplete="off" required><label class="sr-only" for="market">Market</label><select id="market" name="market"><option value="NSE">NSE · India</option><option value="US">US markets</option></select><button class="analyze-button" id="analyze" type="submit">ANALYZE <span aria-hidden="true">↗</span></button><button class="cancel-button" id="cancel" type="button" hidden>Cancel</button></form>
       <div class="search-under"><div id="examples" class="stock-shortcuts" aria-label="Stock shortcuts"></div></div>
