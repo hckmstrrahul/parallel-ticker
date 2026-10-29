@@ -96,7 +96,7 @@ function setRunning(value) {
   $('stock').disabled = value;
   $('market').disabled = value;
   $('cancel').hidden = !value;
-  $('analyze').innerHTML = value ? 'ANALYZING…' : 'ANALYZE <span aria-hidden="true">↗</span>';
+  $('analyze').textContent = value ? 'ANALYZING…' : 'ANALYZE';
   examples();
 }
 async function analyze() {
@@ -143,7 +143,6 @@ $('stock-form').addEventListener('submit', event => { event.preventDefault(); an
 $('examples').addEventListener('click', event => { const button = event.target.closest('[data-stock]'); if (button && !running) { $('stock').value = button.dataset.stock; $('market').value = button.dataset.market; analyze(); } });
 $('market').addEventListener('change', examples);
 $('cancel').addEventListener('click', () => controller?.abort());
-$('about-button').addEventListener('click', () => { $('about').hidden = !$('about').hidden; $('about-button').setAttribute('aria-expanded', !$('about').hidden); });
 const initialQuery = new URLSearchParams(window.location.search);
 if (['NSE', 'US'].includes(initialQuery.get('market'))) $('market').value = initialQuery.get('market');
 const initialStock = initialQuery.get('stock')?.trim();

@@ -119,3 +119,5 @@ main{width:100%;max-width:var(--page-max);padding-inline:var(--page-gutter);padd
 .signal-bottom:empty{display:none}
 .signal-bottom .signal-description{margin-block-end:12px}
 .signal-bottom .distribution{margin-block-start:0;padding-block-start:0;border-block-start:0}
+.repo-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.repo-link svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
