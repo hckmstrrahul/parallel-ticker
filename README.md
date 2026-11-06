@@ -1,12 +1,16 @@
 # parallel-ticker
 
-Stock signals with probabilities and sources. A minimal demo of the free [Parallel Decisions API](https://docs.parallel.ai/decisions/decisions-quickstart) for US and Indian stocks.
+Explore stock signals for US and NSE-listed companies, with probabilities, dated evidence and source links. A small web app built around the [Parallel Decisions API](https://docs.parallel.ai/decisions/decisions-quickstart).
 
-[Live demo](https://parallel-ticker.vercel.app) · [Parallel.ai](https://parallel.ai/) · [API integration](lib/decisions.mjs)
+[Live demo](https://parallel-ticker.vercel.app) · [API integration](lib/decisions.mjs)
+
+![Stock analysis with probabilities and signal cards](docs/screenshots/analysis.png)
+
+*Development capture; some labels and layout details differ from the current interface.*
 
 ## Run locally
 
-Requires Node.js 22+; no dependencies or API key.
+Requires **Node.js 22+** and internet access for analysis. There are no packages to install or API keys to configure in this implementation.
 
 ```sh
 git clone https://github.com/hckmstrrahul/parallel-ticker.git
@@ -14,29 +18,39 @@ cd parallel-ticker
 npm run dev
 ```
 
-Open [localhost:4317](http://localhost:4317). Run `npm test` to check the integration, streaming, and request validation.
+Open [localhost:4317](http://localhost:4317), choose **US** or **NSE India**, and enter a stock name or ticker. The evidence sidebar shows sources and observation age. Use `PORT=4318 npm run dev` if the default port is occupied.
 
-## How it was built
+## Read the results
 
-Vanilla HTML, CSS, and JavaScript with a Node.js backend. Built with Codex from [Parallel's UI](https://parallel.ai/) references, then refined through screenshot feedback. Vercel serves the frontend and runs the same backend through [a function adapter](api/decisions.mjs).
+The app summarizes trend, RSI, moving average, volume and open interest. Two concurrent Decisions calls assess technicals and trading activity; initial results stream before focused retries for missing readings.
 
-1. A stock name and exchange become focused questions in [lib/decisions.mjs](lib/decisions.mjs).
-2. Two concurrent `web_decisions` calls assess technicals and trading activity using the [free Parallel MCP endpoint](https://docs.parallel.ai/integrations/mcp/quickstart#web_decisions).
-3. Typed answers drive bullish/bearish probabilities, a 0–4 strength score, SMA, RSI, volume, and open interest. Citations populate the evidence sidebar.
-4. Initial results stream immediately after those calls. Missing signals get one focused retry with a 90-day evidence window, expanded from 30 days.
+Readings can be unavailable, undated or older than the latest trading session. Probabilities describe the selected interpretation of available evidence, not the chance of a future return. The app does not provide a live market-data feed. Provider availability and rate limits still apply.
 
-Only Decisions supplies analysis. No separate model or market-data API. Results may be unavailable or dated; evidence age remains visible. Probabilities describe the selected reading, not future returns. Citations are shared per request.
+## API
 
-The [server](server.mjs) exposes `POST /api/decisions` with `{ "stock": "AAPL", "market": "US" }`. It returns JSON, or streamed NDJSON when requested. Results are cached for five minutes per running instance. Free-service rate limits apply.
+The local server and Vercel adapter share `POST /api/decisions`:
 
-## Screenshots
+```sh
+curl http://localhost:4317/api/decisions \
+  -H 'Content-Type: application/json' \
+  -d '{"stock":"AAPL","market":"US"}'
+```
 
-Development snapshots captured during iteration; some precede the final layout and naming.
+`market` accepts `US` or `NSE`. Add `Accept: application/x-ndjson` for streamed snapshots and a final result; cached responses return JSON. Successful results are cached for five minutes per server instance.
 
-| Analysis | Insufficient evidence |
+## Development
+
+```sh
+npm test
+```
+
+Tests cover request validation, Decisions integration, streaming and deployment configuration using controlled responses. The frontend is vanilla HTML, CSS and JavaScript; the backend uses Node.js built-ins.
+
+| Source | Responsibility |
 | --- | --- |
-| ![Stock analysis with probabilities and signal cards](docs/screenshots/analysis.png) | ![Unavailable readings when evidence is insufficient](docs/screenshots/insufficient-evidence.png) |
+| [public/](public/) | Interface, stock suggestions and result rendering. |
+| [lib/decisions.mjs](lib/decisions.mjs) | Questions, MCP transport, evidence and recovery. |
+| [server.mjs](server.mjs) | Local HTTP server, validation, streaming and cache. |
+| [api/decisions.mjs](api/decisions.mjs) | Vercel function adapter. |
 
-| Strength module | Evidence sidebar |
-| --- | --- |
-| ![Technical strength score and segmented chart](docs/screenshots/strength.png) | ![Scrollable sources with expandable excerpts](docs/screenshots/evidence.png) |
+Built with Codex, with interface references from [Parallel.ai](https://parallel.ai/).
